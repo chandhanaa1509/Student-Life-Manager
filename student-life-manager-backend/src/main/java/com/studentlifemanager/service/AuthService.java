@@ -1,8 +1,8 @@
 package com.studentlifemanager.service;
 
-import com.studentlifemanager.dto.AuthResponse;
-import com.studentlifemanager.dto.LoginRequest;
-import com.studentlifemanager.dto.RegisterRequest;
+import com.studentlifemanager.dto.auth.AuthResponse;
+import com.studentlifemanager.dto.auth.LoginRequest;
+import com.studentlifemanager.dto.auth.RegisterRequest;
 import com.studentlifemanager.model.User;
 import com.studentlifemanager.repository.UserRepository;
 import com.studentlifemanager.security.JwtService;
@@ -42,11 +42,7 @@ public class AuthService {
 
         user.setName(request.getName());
         user.setEmail(request.getEmail());
-
-        // Encrypt password before saving
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
-        // Default values
         user.setRole("USER");
         user.setCreatedAt(LocalDateTime.now());
 
@@ -86,7 +82,6 @@ public class AuthService {
             );
         }
 
-        // Generate JWT Token
         String token = jwtService.generateToken(user.getEmail());
 
         return new AuthResponse(

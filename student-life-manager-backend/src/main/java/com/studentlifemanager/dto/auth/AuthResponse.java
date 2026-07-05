@@ -1,4 +1,4 @@
-package com.studentlifemanager.dto;
+package com.studentlifemanager.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

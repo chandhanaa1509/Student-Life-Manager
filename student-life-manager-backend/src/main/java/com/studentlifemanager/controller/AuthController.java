@@ -1,8 +1,8 @@
 package com.studentlifemanager.controller;
 
-import com.studentlifemanager.dto.AuthResponse;
-import com.studentlifemanager.dto.LoginRequest;
-import com.studentlifemanager.dto.RegisterRequest;
+import com.studentlifemanager.dto.auth.AuthResponse;
+import com.studentlifemanager.dto.auth.LoginRequest;
+import com.studentlifemanager.dto.auth.RegisterRequest;
 import com.studentlifemanager.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
