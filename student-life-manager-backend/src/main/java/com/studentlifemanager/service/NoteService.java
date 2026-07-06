@@ -22,4 +22,27 @@ public class NoteService {
     public List<Note> getAllNotes() {
         return noteRepository.findAll();
     }
+
+    public Note updateNote(
+            String id,
+            Note updatedNote
+    ) {
+
+        Note note = noteRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Note not found"));
+
+        note.setTitle(updatedNote.getTitle());
+        note.setContent(updatedNote.getContent());
+
+        return noteRepository.save(note);
+
+    }
+
+    public void deleteNote(String id) {
+
+        noteRepository.deleteById(id);
+
+    }
+
 }

@@ -1,34 +1,34 @@
-interface InputProps {
-  label: string;
-  type?: string;
-  name: string;
-  value: string;
-  placeholder?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+interface Props {
+    label: string;
+    name: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    placeholder?: string;
+    type?: string;
 }
 
 export default function Input({
-  label,
-  type = "text",
-  name,
-  value,
-  placeholder,
-  onChange,
-}: InputProps) {
-  return (
-    <div>
-      <label className="mb-2 block font-medium">
-        {label}
-      </label>
+    label,
+    name,
+    value,
+    onChange,
+    placeholder,
+    type = "text",
+}: Props) {
+    return (
+        <div className="space-y-2">
+            <label className="text-sm font-semibold text-slate-700">
+                {label}
+            </label>
 
-      <input
-        type={type}
-        name={name}
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-        className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-indigo-600"
-      />
-    </div>
-  );
+            <input
+                type={type}
+                name={name}
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+                className="w-full rounded-2xl border border-slate-200 bg-white/80 px-5 py-3 text-slate-800 shadow-sm outline-none transition-all duration-300 placeholder:text-slate-400 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+            />
+        </div>
+    );
 }

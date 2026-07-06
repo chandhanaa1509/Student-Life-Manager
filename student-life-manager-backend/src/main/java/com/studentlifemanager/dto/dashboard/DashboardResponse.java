@@ -1,30 +1,24 @@
-// Purpose:
-// DTO returned to the Dashboard page.
-
 package com.studentlifemanager.dto.dashboard;
 
-import com.studentlifemanager.model.Assignment;
-import com.studentlifemanager.model.Deadline;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.List;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DashboardResponse {
 
-    private long totalAssignments;
+    private long assignments;
 
-    private long totalInternships;
+    private long notes;
 
-    private long totalResources;
+    private long resources;
 
-    private long totalNotes;
+    private long deadlines;
 
-    private long totalDeadlines;
+    private long internships;
 
-    private List<Assignment> recentAssignments;
-
-    private List<Deadline> upcomingDeadlines;
 }
 
 

@@ -1,15 +1,16 @@
-// Purpose:
-// Represents an important deadline.
-
 package com.studentlifemanager.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "deadlines")
 public class Deadline {
 
@@ -18,11 +19,8 @@ public class Deadline {
 
     private String title;
 
-    private String deadlineType;
-
     private LocalDate dueDate;
 
-    private boolean completed;
+    private String priority;
 
-    private String userId;
 }

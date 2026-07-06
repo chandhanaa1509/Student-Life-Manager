@@ -1,18 +1,35 @@
+import { useState } from "react";
+
+import AppLayout from "../../components/layout/AppLayout";
 import PageHeader from "../../components/common/PageHeader";
-import EmptyState from "../../components/common/EmptyState";
+import InternshipForm from "../../components/internships/InternshipForm";
+import InternshipList from "../../components/internships/InternshipList";
 
 export default function InternshipsPage() {
-  return (
-    <div className="p-10">
-      <PageHeader
-        title="Internships"
-        subtitle="Track internship opportunities."
-      />
 
-      <EmptyState
-        title="No Internships Yet"
-        description="Add your first internship."
-      />
-    </div>
-  );
+    const [refresh, setRefresh] = useState(0);
+
+    return (
+
+        <AppLayout>
+
+            <PageHeader
+                title="Internships"
+                subtitle="Track your internship applications."
+            />
+
+            <InternshipForm
+                onInternshipAdded={() =>
+                    setRefresh((prev) => prev + 1)
+                }
+            />
+
+            <InternshipList
+                refresh={refresh}
+            />
+
+        </AppLayout>
+
+    );
+
 }

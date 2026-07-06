@@ -1,6 +1,9 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+
 import Button from "../common/Button";
 import Input from "../common/Input";
+
 import { addAssignment } from "../../api/assignmentApi";
 
 interface Props {
@@ -48,13 +51,13 @@ export default function AssignmentForm({
 
       onAssignmentAdded();
 
-      alert("Assignment Added!");
+      toast.success("Assignment added successfully!");
 
     } catch (error) {
 
       console.error(error);
 
-      alert("Failed to add assignment.");
+      toast.error("Failed to add assignment.");
 
     }
 
@@ -64,7 +67,7 @@ export default function AssignmentForm({
 
     <form
       onSubmit={handleSubmit}
-      className="mb-10 rounded-2xl bg-white p-8 shadow-sm space-y-5"
+      className="mb-10 rounded-3xl border border-white/40 bg-white/80 p-8 shadow-lg backdrop-blur space-y-5"
     >
 
       <Input
@@ -103,7 +106,7 @@ export default function AssignmentForm({
           name="status"
           value={formData.status}
           onChange={handleChange}
-          className="w-full rounded-xl border border-slate-300 px-4 py-3"
+          className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
         >
 
           <option>Pending</option>

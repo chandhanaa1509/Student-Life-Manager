@@ -1,18 +1,35 @@
+import { useState } from "react";
+
+import AppLayout from "../../components/layout/AppLayout";
 import PageHeader from "../../components/common/PageHeader";
-import EmptyState from "../../components/common/EmptyState";
+import DeadlineForm from "../../components/deadlines/DeadlineForm";
+import DeadlineList from "../../components/deadlines/DeadlineList";
 
 export default function DeadlinesPage() {
-  return (
-    <div className="p-10">
-      <PageHeader
-        title="Deadlines"
-        subtitle="Keep track of important deadlines."
-      />
 
-      <EmptyState
-        title="No Deadlines Yet"
-        description="Add your first deadline."
-      />
-    </div>
-  );
+    const [refresh, setRefresh] = useState(0);
+
+    return (
+
+        <AppLayout>
+
+            <PageHeader
+                title="Deadlines"
+                subtitle="Track important academic deadlines."
+            />
+
+            <DeadlineForm
+                onDeadlineAdded={() =>
+                    setRefresh((prev) => prev + 1)
+                }
+            />
+
+            <DeadlineList
+                refresh={refresh}
+            />
+
+        </AppLayout>
+
+    );
+
 }

@@ -1,9 +1,7 @@
 package com.studentlifemanager.controller;
 
-import com.studentlifemanager.dto.deadline.DeadlineRequest;
-import com.studentlifemanager.dto.deadline.DeadlineResponse;
+import com.studentlifemanager.model.Deadline;
 import com.studentlifemanager.service.DeadlineService;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,37 +12,28 @@ public class DeadlineController {
 
     private final DeadlineService deadlineService;
 
-    public DeadlineController(DeadlineService deadlineService) {
+    public DeadlineController(
+            DeadlineService deadlineService
+    ) {
+
         this.deadlineService = deadlineService;
+
     }
 
     @PostMapping
-    public DeadlineResponse createDeadline(
-            @Valid @RequestBody DeadlineRequest request) {
+    public Deadline addDeadline(
+            @RequestBody Deadline deadline
+    ) {
 
-        return deadlineService.createDeadline(request);
+        return deadlineService.addDeadline(deadline);
+
     }
 
     @GetMapping
-    public List<DeadlineResponse> getAllDeadlines() {
+    public List<Deadline> getAllDeadlines() {
+
         return deadlineService.getAllDeadlines();
+
     }
 
-    @GetMapping("/{id}")
-    public DeadlineResponse getDeadlineById(@PathVariable String id) {
-        return deadlineService.getDeadlineById(id);
-    }
-
-    @PutMapping("/{id}")
-    public DeadlineResponse updateDeadline(
-            @PathVariable String id,
-            @Valid @RequestBody DeadlineRequest request) {
-
-        return deadlineService.updateDeadline(id, request);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteDeadline(@PathVariable String id) {
-        deadlineService.deleteDeadline(id);
-    }
 }

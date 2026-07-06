@@ -1,13 +1,18 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+
 import Button from "../common/Button";
 import Input from "../common/Input";
+
 import { addResource } from "../../api/resourceApi";
 
 interface Props {
   onResourceAdded: () => void;
 }
 
-export default function ResourceForm({ onResourceAdded }: Props) {
+export default function ResourceForm({
+  onResourceAdded,
+}: Props) {
 
   const [formData, setFormData] = useState({
     title: "",
@@ -44,13 +49,13 @@ export default function ResourceForm({ onResourceAdded }: Props) {
 
       onResourceAdded();
 
-      alert("Resource Added!");
+      toast.success("Resource added successfully!");
 
     } catch (err) {
 
       console.error(err);
 
-      alert("Failed to add resource.");
+      toast.error("Failed to add resource.");
 
     }
 
@@ -60,7 +65,7 @@ export default function ResourceForm({ onResourceAdded }: Props) {
 
     <form
       onSubmit={handleSubmit}
-      className="mb-8 rounded-2xl bg-white p-8 shadow-sm space-y-5"
+      className="mb-10 rounded-3xl border border-white/40 bg-white/80 p-8 shadow-xl backdrop-blur space-y-5"
     >
 
       <Input

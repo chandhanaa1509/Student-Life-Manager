@@ -1,152 +1,154 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import { loginUser } from "../../api/authApi";
 
 export default function LoginPage() {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
     });
 
-  };
+    const handleChange = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
 
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
 
-    e.preventDefault();
+    };
 
-    try {
+    const handleSubmit = async (
+        e: React.FormEvent
+    ) => {
 
-      const response = await loginUser(formData);
+        e.preventDefault();
 
-      if (response.success) {
+        try {
 
-        localStorage.setItem("token", response.token);
+            const response = await loginUser(formData);
 
-        alert("Login Successful!");
+            if (response.success) {
 
-        navigate("/dashboard");
+                localStorage.setItem("token", response.token);
 
-      } else {
+                toast.success("Welcome back!");
 
-        alert(response.message);
+                navigate("/dashboard");
 
-      }
+            } else {
 
-    } catch (error) {
+                toast.error(response.message);
 
-      console.error(error);
+            }
 
-      alert("Something went wrong.");
+        } catch (error) {
 
-    }
+            console.error(error);
 
-  };
+            toast.error("Something went wrong.");
 
-  return (
+        }
 
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-6">
+    };
 
-      <div className="w-full max-w-md rounded-3xl bg-white p-10 shadow-lg">
+    return (
 
-        <h1 className="text-3xl font-bold text-center text-indigo-600">
+        <div className="min-h-screen flex items-center justify-center bg-slate-50 px-6">
 
-          Welcome Back
+            <div className="w-full max-w-md rounded-3xl border border-white/40 bg-white/80 p-10 shadow-xl backdrop-blur">
 
-        </h1>
+                <h1 className="text-center text-3xl font-bold text-indigo-600">
 
-        <p className="mt-2 text-center text-slate-500">
+                    Welcome Back
 
-          Sign in to continue to CampusFlow
+                </h1>
 
-        </p>
+                <p className="mt-2 text-center text-slate-500">
 
-        <form
-          onSubmit={handleSubmit}
-          className="mt-8 space-y-5"
-        >
+                    Sign in to continue to CampusFlow
 
-          <div>
+                </p>
 
-            <label className="block mb-2 font-medium">
+                <form
+                    onSubmit={handleSubmit}
+                    className="mt-8 space-y-5"
+                >
 
-              Email
+                    <div>
 
-            </label>
+                        <label className="mb-2 block font-medium">
 
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Enter your email"
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-600"
-            />
+                            Email
 
-          </div>
+                        </label>
 
-          <div>
+                        <input
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            placeholder="Enter your email"
+                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                        />
 
-            <label className="block mb-2 font-medium">
+                    </div>
 
-              Password
+                    <div>
 
-            </label>
+                        <label className="mb-2 block font-medium">
 
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Enter your password"
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-indigo-600"
-            />
+                            Password
 
-          </div>
+                        </label>
 
-          <button
-            type="submit"
-            className="w-full rounded-xl bg-indigo-600 py-3 font-semibold text-white hover:bg-indigo-700 transition"
-          >
+                        <input
+                            type="password"
+                            name="password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            placeholder="Enter your password"
+                            className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                        />
 
-            Login
+                    </div>
 
-          </button>
+                    <button
+                        type="submit"
+                        className="w-full rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    >
 
-        </form>
+                        Login
 
-        <p className="mt-8 text-center text-slate-500">
+                    </button>
 
-          Don't have an account?{" "}
+                </form>
 
-          <Link
-            to="/register"
-            className="font-semibold text-indigo-600"
-          >
+                <p className="mt-8 text-center text-slate-500">
 
-            Register
+                    Don't have an account?{" "}
 
-          </Link>
+                    <Link
+                        to="/register"
+                        className="font-semibold text-indigo-600"
+                    >
 
-        </p>
+                        Register
 
-      </div>
+                    </Link>
 
-    </div>
+                </p>
 
-  );
+            </div>
+
+        </div>
+
+    );
 
 }

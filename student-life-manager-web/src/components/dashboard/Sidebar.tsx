@@ -1,93 +1,153 @@
-import { Link, useNavigate } from "react-router-dom";
+import {
+    FiBook,
+    FiBriefcase,
+    FiCalendar,
+    FiFileText,
+    FiGrid,
+    FiLogOut,
+    FiUser,
+    FiFolder
+} from "react-icons/fi";
+
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const logout = () => {
+    const location = useLocation();
 
-    localStorage.removeItem("token");
+    const logout = () => {
 
-    navigate("/login");
+        localStorage.removeItem("token");
 
-  };
+        navigate("/login");
 
-  return (
+    };
 
-    <aside className="w-64 min-h-screen bg-white shadow-md p-6 flex flex-col">
+    const menuItems = [
 
-      <div>
+        {
+            name: "Dashboard",
+            icon: <FiGrid size={20} />,
+            path: "/dashboard",
+        },
 
-        <h1 className="text-3xl font-bold text-indigo-600">
+        {
+            name: "Assignments",
+            icon: <FiBook size={20} />,
+            path: "/assignments",
+        },
 
-          ◈ CampusFlow
+        {
+            name: "Notes",
+            icon: <FiFileText size={20} />,
+            path: "/notes",
+        },
 
-        </h1>
+        {
+            name: "Resources",
+            icon: <FiFolder size={20} />,
+            path: "/resources",
+        },
 
-        <nav className="mt-10 space-y-3">
+        {
+            name: "Deadlines",
+            icon: <FiCalendar size={20} />,
+            path: "/deadlines",
+        },
 
-          <Link
-            to="/dashboard"
-            className="block rounded-xl px-4 py-3 hover:bg-indigo-100"
-          >
-            🏠 Dashboard
-          </Link>
+        {
+            name: "Internships",
+            icon: <FiBriefcase size={20} />,
+            path: "/internships",
+        },
 
-          <Link
-            to="/assignments"
-            className="block rounded-xl px-4 py-3 hover:bg-indigo-100"
-          >
-            📚 Assignments
-          </Link>
+        {
+            name: "Profile",
+            icon: <FiUser size={20} />,
+            path: "/profile",
+        },
 
-          <Link
-            to="/notes"
-            className="block rounded-xl px-4 py-3 hover:bg-indigo-100"
-          >
-            📝 Notes
-          </Link>
+    ];
 
-          <Link
-            to="/resources"
-            className="block rounded-xl px-4 py-3 hover:bg-indigo-100"
-          >
-            📖 Resources
-          </Link>
+    return (
 
-          <Link
-            to="/deadlines"
-            className="block rounded-xl px-4 py-3 hover:bg-indigo-100"
-          >
-            ⏰ Deadlines
-          </Link>
+        <aside className="w-72 min-h-screen border-r border-slate-200 bg-white flex flex-col">
 
-          <Link
-            to="/internships"
-            className="block rounded-xl px-4 py-3 hover:bg-indigo-100"
-          >
-            💼 Internships
-          </Link>
+            <div className="px-8 py-8">
 
-          <Link
-            to="/profile"
-            className="block rounded-xl px-4 py-3 hover:bg-indigo-100"
-          >
-            👤 Profile
-          </Link>
+                <h1 className="text-3xl font-extrabold tracking-tight text-indigo-600">
 
-        </nav>
+                    CampusFlow
 
-      </div>
+                </h1>
 
-      <button
-        onClick={logout}
-        className="mt-auto rounded-xl bg-red-500 px-4 py-3 text-white hover:bg-red-600 transition"
-      >
-        Logout
-      </button>
+                <p className="mt-2 text-sm text-slate-500">
 
-    </aside>
+                    Organize. Learn. Achieve.
 
-  );
+                </p>
+
+            </div>
+
+            <nav className="flex-1 px-5 space-y-2">
+
+                {menuItems.map((item) => {
+
+                    const active =
+                        location.pathname === item.path;
+
+                    return (
+
+                        <Link
+                            key={item.name}
+                            to={item.path}
+                            className={`flex items-center gap-4 rounded-2xl px-5 py-4 transition-all duration-300
+
+                            ${
+                                active
+                                    ? "bg-indigo-600 text-white shadow-md"
+                                    : "text-slate-600 hover:bg-slate-100"
+                            }`}
+                        >
+
+                            {item.icon}
+
+                            <span className="font-medium">
+
+                                {item.name}
+
+                            </span>
+
+                        </Link>
+
+                    );
+
+                })}
+
+            </nav>
+
+            <div className="p-5">
+
+                <button
+
+                    onClick={logout}
+
+                    className="flex w-full items-center justify-center gap-3 rounded-2xl bg-rose-500 py-4 font-semibold text-white transition-all duration-300 hover:bg-rose-600"
+
+                >
+
+                    <FiLogOut />
+
+                    Logout
+
+                </button>
+
+            </div>
+
+        </aside>
+
+    );
 
 }
