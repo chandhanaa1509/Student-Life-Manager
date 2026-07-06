@@ -1,12 +1,7 @@
-// Purpose:
-// Exposes REST APIs for Study Resources.
-
 package com.studentlifemanager.controller;
 
-import com.studentlifemanager.dto.resource.ResourceRequest;
-import com.studentlifemanager.dto.resource.ResourceResponse;
+import com.studentlifemanager.model.Resource;
 import com.studentlifemanager.service.ResourceService;
-import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,32 +17,12 @@ public class ResourceController {
     }
 
     @PostMapping
-    public ResourceResponse createResource(
-            @Valid @RequestBody ResourceRequest request) {
-
-        return resourceService.createResource(request);
+    public Resource addResource(@RequestBody Resource resource) {
+        return resourceService.addResource(resource);
     }
 
     @GetMapping
-    public List<ResourceResponse> getAllResources() {
+    public List<Resource> getAllResources() {
         return resourceService.getAllResources();
-    }
-
-    @GetMapping("/{id}")
-    public ResourceResponse getResourceById(@PathVariable String id) {
-        return resourceService.getResourceById(id);
-    }
-
-    @PutMapping("/{id}")
-    public ResourceResponse updateResource(
-            @PathVariable String id,
-            @Valid @RequestBody ResourceRequest request) {
-
-        return resourceService.updateResource(id, request);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteResource(@PathVariable String id) {
-        resourceService.deleteResource(id);
     }
 }

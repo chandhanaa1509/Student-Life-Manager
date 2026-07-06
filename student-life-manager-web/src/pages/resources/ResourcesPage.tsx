@@ -1,18 +1,35 @@
+import { useState } from "react";
+
+import AppLayout from "../../components/layout/AppLayout";
 import PageHeader from "../../components/common/PageHeader";
-import EmptyState from "../../components/common/EmptyState";
+import ResourceForm from "../../components/resources/ResourceForm";
+import ResourceList from "../../components/resources/ResourceList";
 
 export default function ResourcesPage() {
-  return (
-    <div className="p-10">
-      <PageHeader
-        title="Resources"
-        subtitle="Save useful learning resources."
-      />
 
-      <EmptyState
-        title="No Resources Yet"
-        description="Save your first resource."
-      />
-    </div>
-  );
+    const [refresh, setRefresh] = useState(0);
+
+    return (
+
+        <AppLayout>
+
+            <PageHeader
+                title="Resources"
+                subtitle="Manage useful study resources."
+            />
+
+            <ResourceForm
+                onResourceAdded={() =>
+                    setRefresh((prev) => prev + 1)
+                }
+            />
+
+            <ResourceList
+                refresh={refresh}
+            />
+
+        </AppLayout>
+
+    );
+
 }

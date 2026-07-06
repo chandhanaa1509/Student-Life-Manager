@@ -1,38 +1,39 @@
 import { useState } from "react";
 
+import AppLayout from "../../components/layout/AppLayout";
 import PageHeader from "../../components/common/PageHeader";
 import AssignmentForm from "../../components/assignments/AssignmentForm";
 import AssignmentList from "../../components/assignments/AssignmentList";
 
 export default function AssignmentsPage() {
 
-  const [refresh, setRefresh] = useState(0);
+    const [refresh, setRefresh] = useState(0);
 
-  const handleAssignmentAdded = () => {
+    const handleAssignmentAdded = () => {
 
-    setRefresh((prev) => prev + 1);
+        setRefresh((prev) => prev + 1);
 
-  };
+    };
 
-  return (
+    return (
 
-    <div className="p-10">
+        <AppLayout>
 
-      <PageHeader
-        title="Assignments"
-        subtitle="Manage all your assignments."
-      />
+            <PageHeader
+                title="Assignments"
+                subtitle="Manage all your assignments."
+            />
 
-      <AssignmentForm
-        onAssignmentAdded={handleAssignmentAdded}
-      />
+            <AssignmentForm
+                onAssignmentAdded={handleAssignmentAdded}
+            />
 
-      <AssignmentList
-        refresh={refresh}
-      />
+            <AssignmentList
+                refresh={refresh}
+            />
 
-    </div>
+        </AppLayout>
 
-  );
+    );
 
 }

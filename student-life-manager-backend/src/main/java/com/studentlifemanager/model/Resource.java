@@ -1,13 +1,14 @@
-// Purpose:
-// Represents a study resource saved by a user.
-
 package com.studentlifemanager.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "resources")
 public class Resource {
 
@@ -16,13 +17,7 @@ public class Resource {
 
     private String title;
 
-    private String subject;
+    private String link;
 
-    private String resourceType;
-
-    private String url;
-
-    private String description;
-
-    private String userId;
+    private String category;
 }
