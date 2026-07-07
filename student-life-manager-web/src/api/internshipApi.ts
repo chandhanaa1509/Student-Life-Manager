@@ -32,3 +32,29 @@ export const addInternship = async (
     return response.data;
 
 };
+
+export const updateInternship = async (
+    id: string,
+    internship: any
+) => {
+
+    const response = await axios.put(
+        `${API}/${id}`,
+        internship,
+        getAuthHeader()
+    );
+
+    return response.data;
+
+};
+
+export const deleteInternship = async (
+    id: string
+) => {
+
+    await axios.delete(
+        `${API}/${id}`,
+        getAuthHeader()
+    );
+
+};

@@ -1,6 +1,9 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+
 import Button from "../common/Button";
 import Input from "../common/Input";
+
 import { addInternship } from "../../api/internshipApi";
 
 interface Props {
@@ -48,13 +51,13 @@ export default function InternshipForm({
 
             onInternshipAdded();
 
-            alert("Internship Added!");
+            toast.success("Internship added successfully!");
 
         } catch (err) {
 
             console.error(err);
 
-            alert("Failed to add internship.");
+            toast.error("Failed to add internship.");
 
         }
 
@@ -64,7 +67,7 @@ export default function InternshipForm({
 
         <form
             onSubmit={handleSubmit}
-            className="mb-8 rounded-2xl bg-white p-8 shadow-sm space-y-5"
+            className="mb-10 rounded-3xl border border-white/40 bg-white/80 p-8 shadow-xl backdrop-blur space-y-5"
         >
 
             <Input

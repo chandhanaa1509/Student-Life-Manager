@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { FiSearch } from "react-icons/fi";
+
 import { getInternships } from "../../api/internshipApi";
 
 interface Props {
@@ -10,6 +13,7 @@ export default function InternshipList({
 }: Props) {
 
     const [internships, setInternships] = useState<any[]>([]);
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
 
@@ -29,17 +33,42 @@ export default function InternshipList({
 
             console.error(err);
 
+            toast.error("Failed to load internships.");
+
         }
 
     };
+
+    const filteredInternships = internships.filter(
+        (internship) =>
+            internship.company
+                .toLowerCase()
+                .includes(search.toLowerCase()) ||
+            internship.role
+                .toLowerCase()
+                .includes(search.toLowerCase()) ||
+            internship.status
+                .toLowerCase()
+                .includes(search.toLowerCase())
+    );
 
     if (internships.length === 0) {
 
         return (
 
-            <div className="rounded-2xl bg-white p-8 shadow-sm text-center">
+            <div className="rounded-3xl border border-white/40 bg-white/80 p-12 text-center shadow-xl backdrop-blur">
 
-                No internships available.
+                <h2 className="text-2xl font-bold">
+
+                    No Internships Yet
+
+                </h2>
+
+                <p className="mt-3 text-slate-500">
+
+                    Add your first internship application.
+
+                </p>
 
             </div>
 
@@ -49,60 +78,120 @@ export default function InternshipList({
 
     return (
 
-        <div className="rounded-2xl bg-white shadow-sm overflow-hidden">
+        <>
 
-            <table className="w-full">
+            <div className="relative mb-6">
 
-                <thead className="bg-slate-100">
+                <FiSearch
+                    className="absolute left-4 top-4 text-slate-400"
+                    size={20}
+                />
 
-                    <tr>
+                <input
+                    value={search}
+                    onChange={(e) =>
+                        setSearch(e.target.value)
+                    }
+                    placeholder="Search internships..."
+                    className="w-full rounded-2xl border border-slate-200 bg-white py-3 pl-12 pr-4 outline-none transition focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
+                />
 
-                        <th className="p-4 text-left">Company</th>
+            </div>
 
-                        <th className="p-4 text-left">Role</th>
+            <div className="overflow-hidden rounded-3xl border border-white/40 bg-white/80 shadow-xl backdrop-blur">
 
-                        <th className="p-4 text-left">Status</th>
+                <table className="w-full">
 
-                        <th className="p-4 text-left">Deadline</th>
+                    <thead className="bg-slate-100">
 
-                    </tr>
+                        <tr>
 
-                </thead>
+                            <th className="p-5 text-left">
 
-                <tbody>
+                                Company
 
-                    {internships.map((internship) => (
+                            </th>
 
-                        <tr
-                            key={internship.id}
-                            className="border-t"
-                        >
+                            <th className="p-5 text-left">
 
-                            <td className="p-4">
-                                {internship.company}
-                            </td>
+                                Role
 
-                            <td className="p-4">
-                                {internship.role}
-                            </td>
+                            </th>
 
-                            <td className="p-4">
-                                {internship.status}
-                            </td>
+                            <th className="p-5 text-left">
 
-                            <td className="p-4">
-                                {internship.applicationDeadline}
-                            </td>
+                                Status
+
+                            </th>
+
+                            <th className="p-5 text-left">
+
+                                Deadline
+
+                            </th>
 
                         </tr>
 
-                    ))}
+                    </thead>
 
-                </tbody>
+                    <tbody>
 
-            </table>
+                        {filteredInternships.map(
+                            (internship) => (
 
-        </div>
+                                <tr
+                                    key={internship.id}
+                                    className="border-t transition hover:bg-slate-50"
+                                >
+
+                                    <td className="p-5 font-semibold">
+
+                                        {internship.company}
+
+                                    </td>
+
+                                    <td className="p-5">
+
+                                        {internship.role}
+
+                                    </td>
+
+                                    <td className="p-5">
+
+                                        <span
+                                            className={`rounded-full px-4 py-1 text-sm font-semibold ${
+                                                internship.status === "Selected"
+                                                    ? "bg-green-100 text-green-700"
+                                                    : internship.status === "Interview"
+                                                    ? "bg-blue-100 text-blue-700"
+                                                    : "bg-yellow-100 text-yellow-700"
+                                            }`}
+                                        >
+
+                                            {internship.status}
+
+                                        </span>
+
+                                    </td>
+
+                                    <td className="p-5">
+
+                                        {internship.applicationDeadline}
+
+                                    </td>
+
+                                </tr>
+
+                            )
+                        )}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </>
 
     );
 

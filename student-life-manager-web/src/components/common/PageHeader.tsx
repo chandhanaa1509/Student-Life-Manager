@@ -8,14 +8,20 @@ export default function PageHeader({
   subtitle,
 }: PageHeaderProps) {
   return (
-    <div className="mb-8">
-      <h1 className="text-3xl font-bold text-slate-800">
+    <div className="mb-10">
+
+      <h1 className="text-4xl font-extrabold tracking-tight text-slate-900">
+
         {title}
+
       </h1>
 
-      <p className="mt-2 text-slate-500">
+      <p className="mt-3 text-lg text-slate-500">
+
         {subtitle}
+
       </p>
+
     </div>
   );
 }

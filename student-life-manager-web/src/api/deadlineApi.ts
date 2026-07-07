@@ -32,3 +32,29 @@ export const addDeadline = async (
     return response.data;
 
 };
+
+export const updateDeadline = async (
+    id: string,
+    deadline: any
+) => {
+
+    const response = await axios.put(
+        `${API}/${id}`,
+        deadline,
+        getAuthHeader()
+    );
+
+    return response.data;
+
+};
+
+export const deleteDeadline = async (
+    id: string
+) => {
+
+    await axios.delete(
+        `${API}/${id}`,
+        getAuthHeader()
+    );
+
+};

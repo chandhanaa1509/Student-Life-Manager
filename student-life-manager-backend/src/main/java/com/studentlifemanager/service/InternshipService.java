@@ -31,4 +31,30 @@ public class InternshipService {
 
     }
 
+    public Internship updateInternship(
+            String id,
+            Internship updatedInternship
+    ) {
+
+        Internship internship = internshipRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Internship not found"));
+
+        internship.setCompany(updatedInternship.getCompany());
+        internship.setRole(updatedInternship.getRole());
+        internship.setStatus(updatedInternship.getStatus());
+        internship.setApplicationDeadline(updatedInternship.getApplicationDeadline());
+
+        return internshipRepository.save(internship);
+
+    }
+
+    public void deleteInternship(
+            String id
+    ) {
+
+        internshipRepository.deleteById(id);
+
+    }
+
 }

@@ -22,18 +22,27 @@ public class InternshipController {
     public Internship addInternship(
             @RequestBody Internship internship
     ) {
-
-        return internshipService.addInternship(
-                internship
-        );
-
+        return internshipService.addInternship(internship);
     }
 
     @GetMapping
     public List<Internship> getAllInternships() {
-
         return internshipService.getAllInternships();
+    }
 
+    @PutMapping("/{id}")
+    public Internship updateInternship(
+            @PathVariable String id,
+            @RequestBody Internship internship
+    ) {
+        return internshipService.updateInternship(id, internship);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteInternship(
+            @PathVariable String id
+    ) {
+        internshipService.deleteInternship(id);
     }
 
 }

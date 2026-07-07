@@ -31,4 +31,29 @@ public class DeadlineService {
 
     }
 
+    public Deadline updateDeadline(
+            String id,
+            Deadline updatedDeadline
+    ) {
+
+        Deadline deadline = deadlineRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Deadline not found"));
+
+        deadline.setTitle(updatedDeadline.getTitle());
+        deadline.setDueDate(updatedDeadline.getDueDate());
+        deadline.setPriority(updatedDeadline.getPriority());
+
+        return deadlineRepository.save(deadline);
+
+    }
+
+    public void deleteDeadline(
+            String id
+    ) {
+
+        deadlineRepository.deleteById(id);
+
+    }
+
 }

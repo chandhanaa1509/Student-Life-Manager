@@ -1,6 +1,9 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+
 import Button from "../common/Button";
 import Input from "../common/Input";
+
 import { addDeadline } from "../../api/deadlineApi";
 
 interface Props {
@@ -46,13 +49,13 @@ export default function DeadlineForm({
 
             onDeadlineAdded();
 
-            alert("Deadline Added!");
+            toast.success("Deadline added successfully!");
 
         } catch (err) {
 
             console.error(err);
 
-            alert("Failed to add deadline.");
+            toast.error("Failed to add deadline.");
 
         }
 
@@ -62,7 +65,7 @@ export default function DeadlineForm({
 
         <form
             onSubmit={handleSubmit}
-            className="mb-8 rounded-2xl bg-white p-8 shadow-sm space-y-5"
+            className="mb-10 rounded-3xl border border-white/40 bg-white/80 p-8 shadow-xl backdrop-blur space-y-5"
         >
 
             <Input
@@ -74,8 +77,8 @@ export default function DeadlineForm({
 
             <Input
                 label="Due Date"
-                name="dueDate"
                 type="date"
+                name="dueDate"
                 value={formData.dueDate}
                 onChange={handleChange}
             />
