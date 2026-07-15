@@ -25,4 +25,7 @@ public class Internship {
 
     private LocalDate applicationDeadline;
 
+    // Owner of this internship
+    private String userId;
+
 }

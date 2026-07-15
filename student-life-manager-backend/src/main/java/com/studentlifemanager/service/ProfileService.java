@@ -7,32 +7,33 @@ import com.studentlifemanager.dto.profile.ProfileRequest;
 import com.studentlifemanager.dto.profile.ProfileResponse;
 import com.studentlifemanager.model.User;
 import com.studentlifemanager.repository.UserRepository;
+import com.studentlifemanager.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProfileService {
 
     private final UserRepository userRepository;
+    private final SecurityUtil securityUtil;
 
-    public ProfileService(UserRepository userRepository) {
+    public ProfileService(
+            UserRepository userRepository,
+            SecurityUtil securityUtil) {
+
         this.userRepository = userRepository;
+        this.securityUtil = securityUtil;
     }
-
-    // Temporary user
-    private final String DEMO_EMAIL = "chandhana3@example.com";
 
     public ProfileResponse getProfile() {
 
-        User user = userRepository.findByEmail(DEMO_EMAIL)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = securityUtil.getCurrentUser();
 
         return mapToResponse(user);
     }
 
     public ProfileResponse updateProfile(ProfileRequest request) {
 
-        User user = userRepository.findByEmail(DEMO_EMAIL)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = securityUtil.getCurrentUser();
 
         user.setName(request.getName());
 

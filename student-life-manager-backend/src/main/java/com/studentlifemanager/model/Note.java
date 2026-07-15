@@ -18,4 +18,7 @@ public class Note {
     private String title;
 
     private String content;
+
+    // Owner of this note
+    private String userId;
 }

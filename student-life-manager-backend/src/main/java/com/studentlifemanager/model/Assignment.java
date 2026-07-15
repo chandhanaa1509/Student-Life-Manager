@@ -24,4 +24,7 @@ public class Assignment {
     private LocalDate dueDate;
 
     private String status;
+
+    // Owner of this assignment
+    private String userId;
 }

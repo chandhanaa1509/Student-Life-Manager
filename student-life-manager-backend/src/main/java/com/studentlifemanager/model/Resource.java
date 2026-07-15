@@ -20,4 +20,7 @@ public class Resource {
     private String link;
 
     private String category;
+
+    // Owner of this resource
+    private String userId;
 }

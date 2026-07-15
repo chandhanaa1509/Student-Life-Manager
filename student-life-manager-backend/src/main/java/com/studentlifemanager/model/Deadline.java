@@ -23,4 +23,7 @@ public class Deadline {
 
     private String priority;
 
+    // Owner of this deadline
+    private String userId;
+
 }

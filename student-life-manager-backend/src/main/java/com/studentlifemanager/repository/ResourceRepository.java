@@ -3,5 +3,11 @@ package com.studentlifemanager.repository;
 import com.studentlifemanager.model.Resource;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface ResourceRepository extends MongoRepository<Resource, String> {
+import java.util.List;
+
+public interface ResourceRepository
+        extends MongoRepository<Resource, String> {
+
+    List<Resource> findByUserId(String userId);
+
 }

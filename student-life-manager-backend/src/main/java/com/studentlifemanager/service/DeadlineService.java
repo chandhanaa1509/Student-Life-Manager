@@ -1,7 +1,9 @@
 package com.studentlifemanager.service;
 
 import com.studentlifemanager.model.Deadline;
+import com.studentlifemanager.model.User;
 import com.studentlifemanager.repository.DeadlineRepository;
+import com.studentlifemanager.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,16 +12,23 @@ import java.util.List;
 public class DeadlineService {
 
     private final DeadlineRepository deadlineRepository;
+    private final SecurityUtil securityUtil;
 
     public DeadlineService(
-            DeadlineRepository deadlineRepository
+            DeadlineRepository deadlineRepository,
+            SecurityUtil securityUtil
     ) {
         this.deadlineRepository = deadlineRepository;
+        this.securityUtil = securityUtil;
     }
 
     public Deadline addDeadline(
             Deadline deadline
     ) {
+
+        User currentUser = securityUtil.getCurrentUser();
+
+        deadline.setUserId(currentUser.getId());
 
         return deadlineRepository.save(deadline);
 
@@ -27,7 +36,9 @@ public class DeadlineService {
 
     public List<Deadline> getAllDeadlines() {
 
-        return deadlineRepository.findAll();
+        User currentUser = securityUtil.getCurrentUser();
+
+        return deadlineRepository.findByUserId(currentUser.getId());
 
     }
 
@@ -36,9 +47,15 @@ public class DeadlineService {
             Deadline updatedDeadline
     ) {
 
+        User currentUser = securityUtil.getCurrentUser();
+
         Deadline deadline = deadlineRepository.findById(id)
                 .orElseThrow(() ->
                         new RuntimeException("Deadline not found"));
+
+        if (!deadline.getUserId().equals(currentUser.getId())) {
+            throw new RuntimeException("Access denied");
+        }
 
         deadline.setTitle(updatedDeadline.getTitle());
         deadline.setDueDate(updatedDeadline.getDueDate());
@@ -52,7 +69,17 @@ public class DeadlineService {
             String id
     ) {
 
-        deadlineRepository.deleteById(id);
+        User currentUser = securityUtil.getCurrentUser();
+
+        Deadline deadline = deadlineRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Deadline not found"));
+
+        if (!deadline.getUserId().equals(currentUser.getId())) {
+            throw new RuntimeException("Access denied");
+        }
+
+        deadlineRepository.delete(deadline);
 
     }
 
