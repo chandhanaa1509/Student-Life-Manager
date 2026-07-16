@@ -9,19 +9,15 @@ import java.time.LocalDate;
 @Data
 public class InternshipRequest {
 
-    @NotBlank(message = "Company name is required")
-    private String companyName;
+    @NotBlank(message = "Company is required")
+    private String company;
 
-    @NotBlank(message = "Job role is required")
-    private String jobRole;
+    @NotBlank(message = "Role is required")
+    private String role;
 
     @NotBlank(message = "Status is required")
     private String status;
 
-    @NotNull(message = "Applied date is required")
-    private LocalDate appliedDate;
-
-    private String applicationUrl;
-
-    private String notes;
+    @NotNull(message = "Application deadline is required")
+    private LocalDate applicationDeadline;
 }

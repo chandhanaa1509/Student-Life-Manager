@@ -9,15 +9,11 @@ public class InternshipResponse {
 
     private String id;
 
-    private String companyName;
+    private String company;
 
-    private String jobRole;
+    private String role;
 
     private String status;
 
-    private LocalDate appliedDate;
-
-    private String applicationUrl;
-
-    private String notes;
+    private LocalDate applicationDeadline;
 }

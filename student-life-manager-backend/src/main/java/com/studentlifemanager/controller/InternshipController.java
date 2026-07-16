@@ -1,7 +1,9 @@
 package com.studentlifemanager.controller;
 
-import com.studentlifemanager.model.Internship;
+import com.studentlifemanager.dto.internship.InternshipRequest;
+import com.studentlifemanager.dto.internship.InternshipResponse;
 import com.studentlifemanager.service.InternshipService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,30 +21,38 @@ public class InternshipController {
     }
 
     @PostMapping
-    public Internship addInternship(
-            @RequestBody Internship internship
+    public InternshipResponse addInternship(
+            @Valid @RequestBody InternshipRequest request
     ) {
-        return internshipService.addInternship(internship);
+
+        return internshipService.addInternship(request);
+
     }
 
     @GetMapping
-    public List<Internship> getAllInternships() {
+    public List<InternshipResponse> getAllInternships() {
+
         return internshipService.getAllInternships();
+
     }
 
     @PutMapping("/{id}")
-    public Internship updateInternship(
+    public InternshipResponse updateInternship(
             @PathVariable String id,
-            @RequestBody Internship internship
+            @Valid @RequestBody InternshipRequest request
     ) {
-        return internshipService.updateInternship(id, internship);
+
+        return internshipService.updateInternship(id, request);
+
     }
 
     @DeleteMapping("/{id}")
     public void deleteInternship(
             @PathVariable String id
     ) {
+
         internshipService.deleteInternship(id);
+
     }
 
 }

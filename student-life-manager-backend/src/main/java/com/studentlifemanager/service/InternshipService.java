@@ -1,5 +1,7 @@
 package com.studentlifemanager.service;
 
+import com.studentlifemanager.dto.internship.InternshipRequest;
+import com.studentlifemanager.dto.internship.InternshipResponse;
 import com.studentlifemanager.model.Internship;
 import com.studentlifemanager.model.User;
 import com.studentlifemanager.repository.InternshipRepository;
@@ -7,6 +9,7 @@ import com.studentlifemanager.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class InternshipService {
@@ -22,29 +25,41 @@ public class InternshipService {
         this.securityUtil = securityUtil;
     }
 
-    public Internship addInternship(
-            Internship internship
+    public InternshipResponse addInternship(
+            InternshipRequest request
     ) {
 
         User currentUser = securityUtil.getCurrentUser();
 
+        Internship internship = new Internship();
+
+        internship.setCompany(request.getCompany());
+        internship.setRole(request.getRole());
+        internship.setStatus(request.getStatus());
+        internship.setApplicationDeadline(request.getApplicationDeadline());
         internship.setUserId(currentUser.getId());
 
-        return internshipRepository.save(internship);
+        Internship saved = internshipRepository.save(internship);
+
+        return mapToResponse(saved);
 
     }
 
-    public List<Internship> getAllInternships() {
+    public List<InternshipResponse> getAllInternships() {
 
         User currentUser = securityUtil.getCurrentUser();
 
-        return internshipRepository.findByUserId(currentUser.getId());
+        return internshipRepository
+                .findByUserId(currentUser.getId())
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
 
     }
 
-    public Internship updateInternship(
+    public InternshipResponse updateInternship(
             String id,
-            Internship updatedInternship
+            InternshipRequest request
     ) {
 
         User currentUser = securityUtil.getCurrentUser();
@@ -57,12 +72,14 @@ public class InternshipService {
             throw new RuntimeException("Access denied");
         }
 
-        internship.setCompany(updatedInternship.getCompany());
-        internship.setRole(updatedInternship.getRole());
-        internship.setStatus(updatedInternship.getStatus());
-        internship.setApplicationDeadline(updatedInternship.getApplicationDeadline());
+        internship.setCompany(request.getCompany());
+        internship.setRole(request.getRole());
+        internship.setStatus(request.getStatus());
+        internship.setApplicationDeadline(request.getApplicationDeadline());
 
-        return internshipRepository.save(internship);
+        Internship updated = internshipRepository.save(internship);
+
+        return mapToResponse(updated);
 
     }
 
@@ -81,6 +98,22 @@ public class InternshipService {
         }
 
         internshipRepository.delete(internship);
+
+    }
+
+    private InternshipResponse mapToResponse(
+            Internship internship
+    ) {
+
+        InternshipResponse response = new InternshipResponse();
+
+        response.setId(internship.getId());
+        response.setCompany(internship.getCompany());
+        response.setRole(internship.getRole());
+        response.setStatus(internship.getStatus());
+        response.setApplicationDeadline(internship.getApplicationDeadline());
+
+        return response;
 
     }
 
