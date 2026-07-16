@@ -11,7 +11,4 @@ public class NoteRequest {
 
     @NotBlank(message = "Content is required")
     private String content;
-
-    @NotBlank(message = "Category is required")
-    private String category;
 }

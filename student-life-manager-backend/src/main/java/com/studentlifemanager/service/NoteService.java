@@ -1,5 +1,7 @@
 package com.studentlifemanager.service;
 
+import com.studentlifemanager.dto.note.NoteRequest;
+import com.studentlifemanager.dto.note.NoteResponse;
 import com.studentlifemanager.model.Note;
 import com.studentlifemanager.model.User;
 import com.studentlifemanager.repository.NoteRepository;
@@ -7,6 +9,7 @@ import com.studentlifemanager.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class NoteService {
@@ -22,26 +25,36 @@ public class NoteService {
         this.securityUtil = securityUtil;
     }
 
-    public Note addNote(Note note) {
+    public NoteResponse addNote(
+            NoteRequest request) {
 
         User currentUser = securityUtil.getCurrentUser();
 
+        Note note = new Note();
+
+        note.setTitle(request.getTitle());
+        note.setContent(request.getContent());
         note.setUserId(currentUser.getId());
 
-        return noteRepository.save(note);
+        Note saved = noteRepository.save(note);
+
+        return mapToResponse(saved);
     }
 
-    public List<Note> getAllNotes() {
+    public List<NoteResponse> getAllNotes() {
 
         User currentUser = securityUtil.getCurrentUser();
 
-        return noteRepository.findByUserId(currentUser.getId());
+        return noteRepository
+                .findByUserId(currentUser.getId())
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
-    public Note updateNote(
+    public NoteResponse updateNote(
             String id,
-            Note updatedNote
-    ) {
+            NoteRequest request) {
 
         User currentUser = securityUtil.getCurrentUser();
 
@@ -53,10 +66,12 @@ public class NoteService {
             throw new RuntimeException("Access denied");
         }
 
-        note.setTitle(updatedNote.getTitle());
-        note.setContent(updatedNote.getContent());
+        note.setTitle(request.getTitle());
+        note.setContent(request.getContent());
 
-        return noteRepository.save(note);
+        Note updated = noteRepository.save(note);
+
+        return mapToResponse(updated);
     }
 
     public void deleteNote(String id) {
@@ -72,5 +87,17 @@ public class NoteService {
         }
 
         noteRepository.delete(note);
+    }
+
+    private NoteResponse mapToResponse(
+            Note note) {
+
+        NoteResponse response = new NoteResponse();
+
+        response.setId(note.getId());
+        response.setTitle(note.getTitle());
+        response.setContent(note.getContent());
+
+        return response;
     }
 }

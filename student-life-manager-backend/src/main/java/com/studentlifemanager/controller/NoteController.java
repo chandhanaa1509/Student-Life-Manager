@@ -1,7 +1,9 @@
 package com.studentlifemanager.controller;
 
-import com.studentlifemanager.model.Note;
+import com.studentlifemanager.dto.note.NoteRequest;
+import com.studentlifemanager.dto.note.NoteResponse;
 import com.studentlifemanager.service.NoteService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,32 +14,37 @@ public class NoteController {
 
     private final NoteService noteService;
 
-    public NoteController(NoteService noteService) {
+    public NoteController(
+            NoteService noteService) {
+
         this.noteService = noteService;
     }
 
     @PostMapping
-    public Note addNote(@RequestBody Note note) {
-        return noteService.addNote(note);
+    public NoteResponse addNote(
+            @Valid @RequestBody NoteRequest request) {
+
+        return noteService.addNote(request);
     }
 
     @GetMapping
-    public List<Note> getAllNotes() {
+    public List<NoteResponse> getAllNotes() {
+
         return noteService.getAllNotes();
     }
 
     @PutMapping("/{id}")
-    public Note updateNote(
+    public NoteResponse updateNote(
             @PathVariable String id,
-            @RequestBody Note note) {
+            @Valid @RequestBody NoteRequest request) {
 
-        return noteService.updateNote(id, note);
+        return noteService.updateNote(id, request);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteNote(@PathVariable String id) {
+    public void deleteNote(
+            @PathVariable String id) {
 
         noteService.deleteNote(id);
-
     }
 }

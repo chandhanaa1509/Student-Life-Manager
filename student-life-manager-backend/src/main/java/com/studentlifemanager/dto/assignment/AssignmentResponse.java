@@ -11,11 +11,9 @@ public class AssignmentResponse {
 
     private String title;
 
-    private String description;
+    private String subject;
 
     private LocalDate dueDate;
 
-    private String priority;
-
-    private boolean completed;
+    private String status;
 }

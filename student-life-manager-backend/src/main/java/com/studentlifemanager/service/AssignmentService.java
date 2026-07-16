@@ -1,5 +1,7 @@
 package com.studentlifemanager.service;
 
+import com.studentlifemanager.dto.assignment.AssignmentRequest;
+import com.studentlifemanager.dto.assignment.AssignmentResponse;
 import com.studentlifemanager.model.Assignment;
 import com.studentlifemanager.model.User;
 import com.studentlifemanager.repository.AssignmentRepository;
@@ -7,6 +9,7 @@ import com.studentlifemanager.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AssignmentService {
@@ -22,25 +25,39 @@ public class AssignmentService {
         this.securityUtil = securityUtil;
     }
 
-    public Assignment addAssignment(Assignment assignment) {
+    public AssignmentResponse addAssignment(
+            AssignmentRequest request) {
 
         User currentUser = securityUtil.getCurrentUser();
 
+        Assignment assignment = new Assignment();
+
+        assignment.setTitle(request.getTitle());
+        assignment.setSubject(request.getSubject());
+        assignment.setDueDate(request.getDueDate());
+        assignment.setStatus(request.getStatus());
         assignment.setUserId(currentUser.getId());
 
-        return assignmentRepository.save(assignment);
+        Assignment saved =
+                assignmentRepository.save(assignment);
+
+        return mapToResponse(saved);
     }
 
-    public List<Assignment> getAllAssignments() {
+    public List<AssignmentResponse> getAllAssignments() {
 
         User currentUser = securityUtil.getCurrentUser();
 
-        return assignmentRepository.findByUserId(currentUser.getId());
+        return assignmentRepository
+                .findByUserId(currentUser.getId())
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
     }
 
-    public Assignment updateAssignment(
+    public AssignmentResponse updateAssignment(
             String id,
-            Assignment updatedAssignment) {
+            AssignmentRequest request) {
 
         User currentUser = securityUtil.getCurrentUser();
 
@@ -53,12 +70,15 @@ public class AssignmentService {
             throw new RuntimeException("Access denied");
         }
 
-        assignment.setTitle(updatedAssignment.getTitle());
-        assignment.setSubject(updatedAssignment.getSubject());
-        assignment.setDueDate(updatedAssignment.getDueDate());
-        assignment.setStatus(updatedAssignment.getStatus());
+        assignment.setTitle(request.getTitle());
+        assignment.setSubject(request.getSubject());
+        assignment.setDueDate(request.getDueDate());
+        assignment.setStatus(request.getStatus());
 
-        return assignmentRepository.save(assignment);
+        Assignment updated =
+                assignmentRepository.save(assignment);
+
+        return mapToResponse(updated);
     }
 
     public void deleteAssignment(String id) {
@@ -75,5 +95,20 @@ public class AssignmentService {
         }
 
         assignmentRepository.delete(assignment);
+    }
+
+    private AssignmentResponse mapToResponse(
+            Assignment assignment) {
+
+        AssignmentResponse response =
+                new AssignmentResponse();
+
+        response.setId(assignment.getId());
+        response.setTitle(assignment.getTitle());
+        response.setSubject(assignment.getSubject());
+        response.setDueDate(assignment.getDueDate());
+        response.setStatus(assignment.getStatus());
+
+        return response;
     }
 }

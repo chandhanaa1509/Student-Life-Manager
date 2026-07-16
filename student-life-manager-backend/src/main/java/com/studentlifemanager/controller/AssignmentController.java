@@ -1,7 +1,9 @@
 package com.studentlifemanager.controller;
 
-import com.studentlifemanager.model.Assignment;
+import com.studentlifemanager.dto.assignment.AssignmentRequest;
+import com.studentlifemanager.dto.assignment.AssignmentResponse;
 import com.studentlifemanager.service.AssignmentService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,30 +14,37 @@ public class AssignmentController {
 
     private final AssignmentService assignmentService;
 
-    public AssignmentController(AssignmentService assignmentService) {
+    public AssignmentController(
+            AssignmentService assignmentService) {
+
         this.assignmentService = assignmentService;
     }
 
     @PostMapping
-    public Assignment addAssignment(@RequestBody Assignment assignment) {
-        return assignmentService.addAssignment(assignment);
+    public AssignmentResponse addAssignment(
+            @Valid @RequestBody AssignmentRequest request) {
+
+        return assignmentService.addAssignment(request);
     }
 
     @GetMapping
-    public List<Assignment> getAllAssignments() {
+    public List<AssignmentResponse> getAllAssignments() {
+
         return assignmentService.getAllAssignments();
     }
 
     @PutMapping("/{id}")
-    public Assignment updateAssignment(
+    public AssignmentResponse updateAssignment(
             @PathVariable String id,
-            @RequestBody Assignment assignment) {
+            @Valid @RequestBody AssignmentRequest request) {
 
-        return assignmentService.updateAssignment(id, assignment);
+        return assignmentService.updateAssignment(id, request);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAssignment(@PathVariable String id) {
+    public void deleteAssignment(
+            @PathVariable String id) {
+
         assignmentService.deleteAssignment(id);
     }
 }

@@ -12,11 +12,12 @@ public class AssignmentRequest {
     @NotBlank(message = "Title is required")
     private String title;
 
-    private String description;
+    @NotBlank(message = "Subject is required")
+    private String subject;
 
     @NotNull(message = "Due date is required")
     private LocalDate dueDate;
 
-    @NotBlank(message = "Priority is required")
-    private String priority;
+    @NotBlank(message = "Status is required")
+    private String status;
 }
