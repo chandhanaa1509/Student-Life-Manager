@@ -7,6 +7,8 @@ import com.studentlifemanager.model.User;
 import com.studentlifemanager.repository.NoteRepository;
 import com.studentlifemanager.security.SecurityUtil;
 import org.springframework.stereotype.Service;
+import com.studentlifemanager.exception.ResourceNotFoundException;
+import com.studentlifemanager.exception.UnauthorizedException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,10 +62,10 @@ public class NoteService {
 
         Note note = noteRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Note not found"));
+                        new ResourceNotFoundException("Note not found"));
 
         if (!note.getUserId().equals(currentUser.getId())) {
-            throw new RuntimeException("Access denied");
+            throw new UnauthorizedException("Access denied");
         }
 
         note.setTitle(request.getTitle());
@@ -80,10 +82,10 @@ public class NoteService {
 
         Note note = noteRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Note not found"));
+                        new ResourceNotFoundException("Note not found"));
 
         if (!note.getUserId().equals(currentUser.getId())) {
-            throw new RuntimeException("Access denied");
+            throw new UnauthorizedException("Access denied");
         }
 
         noteRepository.delete(note);

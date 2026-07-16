@@ -7,6 +7,8 @@ import com.studentlifemanager.model.User;
 import com.studentlifemanager.repository.DeadlineRepository;
 import com.studentlifemanager.security.SecurityUtil;
 import org.springframework.stereotype.Service;
+import com.studentlifemanager.exception.ResourceNotFoundException;
+import com.studentlifemanager.exception.UnauthorizedException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,10 +67,10 @@ public class DeadlineService {
 
         Deadline deadline = deadlineRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Deadline not found"));
+                        new ResourceNotFoundException("Deadline not found"));
 
         if (!deadline.getUserId().equals(currentUser.getId())) {
-            throw new RuntimeException("Access denied");
+            throw new UnauthorizedException("Access denied");
         }
 
         deadline.setTitle(request.getTitle());
@@ -89,10 +91,10 @@ public class DeadlineService {
 
         Deadline deadline = deadlineRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Deadline not found"));
+                        new ResourceNotFoundException("Deadline not found"));
 
         if (!deadline.getUserId().equals(currentUser.getId())) {
-            throw new RuntimeException("Access denied");
+            throw new UnauthorizedException("Access denied");
         }
 
         deadlineRepository.delete(deadline);

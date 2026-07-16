@@ -7,6 +7,8 @@ import com.studentlifemanager.model.User;
 import com.studentlifemanager.repository.AssignmentRepository;
 import com.studentlifemanager.security.SecurityUtil;
 import org.springframework.stereotype.Service;
+import com.studentlifemanager.exception.ResourceNotFoundException;
+import com.studentlifemanager.exception.UnauthorizedException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -64,10 +66,10 @@ public class AssignmentService {
         Assignment assignment =
                 assignmentRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException("Assignment not found"));
+                                new ResourceNotFoundException("Assignment not found"));
 
         if (!assignment.getUserId().equals(currentUser.getId())) {
-            throw new RuntimeException("Access denied");
+            throw new UnauthorizedException("Access denied");
         }
 
         assignment.setTitle(request.getTitle());
@@ -88,10 +90,10 @@ public class AssignmentService {
         Assignment assignment =
                 assignmentRepository.findById(id)
                         .orElseThrow(() ->
-                                new RuntimeException("Assignment not found"));
+                                new ResourceNotFoundException("Assignment not found"));
 
         if (!assignment.getUserId().equals(currentUser.getId())) {
-            throw new RuntimeException("Access denied");
+            throw new UnauthorizedException("Access denied");
         }
 
         assignmentRepository.delete(assignment);

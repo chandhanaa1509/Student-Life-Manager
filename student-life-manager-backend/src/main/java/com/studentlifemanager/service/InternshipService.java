@@ -7,6 +7,8 @@ import com.studentlifemanager.model.User;
 import com.studentlifemanager.repository.InternshipRepository;
 import com.studentlifemanager.security.SecurityUtil;
 import org.springframework.stereotype.Service;
+import com.studentlifemanager.exception.ResourceNotFoundException;
+import com.studentlifemanager.exception.UnauthorizedException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -66,10 +68,10 @@ public class InternshipService {
 
         Internship internship = internshipRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Internship not found"));
+                        new ResourceNotFoundException("Internship not found"));
 
         if (!internship.getUserId().equals(currentUser.getId())) {
-            throw new RuntimeException("Access denied");
+            throw new UnauthorizedException("Access denied");
         }
 
         internship.setCompany(request.getCompany());
@@ -91,10 +93,10 @@ public class InternshipService {
 
         Internship internship = internshipRepository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Internship not found"));
+                        new ResourceNotFoundException("Internship not found"));
 
         if (!internship.getUserId().equals(currentUser.getId())) {
-            throw new RuntimeException("Access denied");
+            throw new UnauthorizedException("Access denied");
         }
 
         internshipRepository.delete(internship);
