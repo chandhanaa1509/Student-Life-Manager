@@ -1,7 +1,9 @@
 package com.studentlifemanager.controller;
 
-import com.studentlifemanager.model.Resource;
+import com.studentlifemanager.dto.resource.ResourceRequest;
+import com.studentlifemanager.dto.resource.ResourceResponse;
 import com.studentlifemanager.service.ResourceService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,17 +14,23 @@ public class ResourceController {
 
     private final ResourceService resourceService;
 
-    public ResourceController(ResourceService resourceService) {
+    public ResourceController(
+            ResourceService resourceService) {
+
         this.resourceService = resourceService;
     }
 
     @PostMapping
-    public Resource addResource(@RequestBody Resource resource) {
-        return resourceService.addResource(resource);
+    public ResourceResponse addResource(
+            @Valid @RequestBody ResourceRequest request) {
+
+        return resourceService.addResource(request);
     }
 
     @GetMapping
-    public List<Resource> getAllResources() {
+    public List<ResourceResponse> getAllResources() {
+
         return resourceService.getAllResources();
     }
+
 }

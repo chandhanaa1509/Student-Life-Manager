@@ -1,6 +1,3 @@
-// Purpose:
-// DTO returned to the client after resource operations.
-
 package com.studentlifemanager.dto.resource;
 
 import lombok.Data;
@@ -12,11 +9,7 @@ public class ResourceResponse {
 
     private String title;
 
-    private String subject;
+    private String link;
 
-    private String resourceType;
-
-    private String url;
-
-    private String description;
+    private String category;
 }
