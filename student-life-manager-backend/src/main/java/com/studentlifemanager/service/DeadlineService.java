@@ -1,5 +1,7 @@
 package com.studentlifemanager.service;
 
+import com.studentlifemanager.dto.deadline.DeadlineRequest;
+import com.studentlifemanager.dto.deadline.DeadlineResponse;
 import com.studentlifemanager.model.Deadline;
 import com.studentlifemanager.model.User;
 import com.studentlifemanager.repository.DeadlineRepository;
@@ -7,6 +9,7 @@ import com.studentlifemanager.security.SecurityUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class DeadlineService {
@@ -22,29 +25,40 @@ public class DeadlineService {
         this.securityUtil = securityUtil;
     }
 
-    public Deadline addDeadline(
-            Deadline deadline
+    public DeadlineResponse addDeadline(
+            DeadlineRequest request
     ) {
 
         User currentUser = securityUtil.getCurrentUser();
 
+        Deadline deadline = new Deadline();
+
+        deadline.setTitle(request.getTitle());
+        deadline.setDueDate(request.getDueDate());
+        deadline.setPriority(request.getPriority());
         deadline.setUserId(currentUser.getId());
 
-        return deadlineRepository.save(deadline);
+        Deadline saved = deadlineRepository.save(deadline);
+
+        return mapToResponse(saved);
 
     }
 
-    public List<Deadline> getAllDeadlines() {
+    public List<DeadlineResponse> getAllDeadlines() {
 
         User currentUser = securityUtil.getCurrentUser();
 
-        return deadlineRepository.findByUserId(currentUser.getId());
+        return deadlineRepository
+                .findByUserId(currentUser.getId())
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
 
     }
 
-    public Deadline updateDeadline(
+    public DeadlineResponse updateDeadline(
             String id,
-            Deadline updatedDeadline
+            DeadlineRequest request
     ) {
 
         User currentUser = securityUtil.getCurrentUser();
@@ -57,11 +71,13 @@ public class DeadlineService {
             throw new RuntimeException("Access denied");
         }
 
-        deadline.setTitle(updatedDeadline.getTitle());
-        deadline.setDueDate(updatedDeadline.getDueDate());
-        deadline.setPriority(updatedDeadline.getPriority());
+        deadline.setTitle(request.getTitle());
+        deadline.setDueDate(request.getDueDate());
+        deadline.setPriority(request.getPriority());
 
-        return deadlineRepository.save(deadline);
+        Deadline updated = deadlineRepository.save(deadline);
+
+        return mapToResponse(updated);
 
     }
 
@@ -80,6 +96,21 @@ public class DeadlineService {
         }
 
         deadlineRepository.delete(deadline);
+
+    }
+
+    private DeadlineResponse mapToResponse(
+            Deadline deadline
+    ) {
+
+        DeadlineResponse response = new DeadlineResponse();
+
+        response.setId(deadline.getId());
+        response.setTitle(deadline.getTitle());
+        response.setDueDate(deadline.getDueDate());
+        response.setPriority(deadline.getPriority());
+
+        return response;
 
     }
 

@@ -11,9 +11,7 @@ public class DeadlineResponse {
 
     private String title;
 
-    private String deadlineType;
-
     private LocalDate dueDate;
 
-    private boolean completed;
+    private String priority;
 }
