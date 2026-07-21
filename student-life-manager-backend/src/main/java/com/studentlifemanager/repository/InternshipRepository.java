@@ -10,4 +10,6 @@ public interface InternshipRepository
 
     List<Internship> findByUserId(String userId);
 
+    long countByUserId(String userId);
+
 }

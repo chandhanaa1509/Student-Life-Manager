@@ -10,4 +10,6 @@ public interface DeadlineRepository
 
     List<Deadline> findByUserId(String userId);
 
+    long countByUserId(String userId);
+
 }

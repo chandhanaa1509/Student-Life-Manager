@@ -9,4 +9,7 @@ public interface AssignmentRepository
         extends MongoRepository<Assignment, String> {
 
     List<Assignment> findByUserId(String userId);
+
+    long countByUserId(String userId);
+
 }

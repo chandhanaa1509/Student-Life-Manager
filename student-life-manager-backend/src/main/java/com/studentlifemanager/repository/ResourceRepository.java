@@ -10,4 +10,6 @@ public interface ResourceRepository
 
     List<Resource> findByUserId(String userId);
 
+    long countByUserId(String userId);
+
 }
