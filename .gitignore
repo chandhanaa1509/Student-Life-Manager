@@ -16,6 +16,8 @@ node_modules/
 
 # Environment Variables
 .env
+.env.*
+target/
 
 # OS Files
 .DS_Store
